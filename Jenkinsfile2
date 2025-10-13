@@ -53,7 +53,8 @@ pipeline {
                     script {
                         // change to dir if your terraform files are in a folder
                         // dir('terraform-files') {
-                            sh 'chmod 600 terraform-files/sir.pem'
+                            sh 'cd cd terraform-files'
+                            sh 'chmod 600 sir.pem'
                             sh 'terraform init'
                             sh 'terraform validate'
                             sh 'terraform apply -auto-approve'
