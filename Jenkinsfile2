@@ -26,8 +26,8 @@ pipeline {
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockercreds', 
-                    passwordVariable: 'dockerpassword', 
+                    credentialsId: 'dockercreds',
+                    passwordVariable: 'dockerpassword',
                     usernameVariable: 'dockerlogin'
                 )]) {
                     sh "echo $dockerpassword | docker login -u $dockerlogin --password-stdin"
@@ -44,24 +44,33 @@ pipeline {
 
         stage('Terraform Config & Deployment') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'awslogin',
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]]) {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                     credentialsId: 'awslogin',
+                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+                ]) {
                     script {
-                        // change to dir if your terraform files are in a folder
-                        // dir('terraform-files') {
-                            sh 'cd cd terraform-files'
-                            sh 'chmod 600 sir.pem'
-                            sh 'terraform init'
-                            sh 'terraform validate'
-                            sh 'terraform apply -auto-approve'
-                        // }
+                        // ✅ Change directory to your Terraform folder
+                        sh '''
+                            cd terraform-files
+                            chmod 600 sir.pem
+                            terraform init
+                            terraform validate
+                            terraform apply -auto-approve
+                        '''
                     }
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Deployment completed successfully!'
+        }
+        failure {
+            echo '❌ Deployment failed. Please check the logs.'
         }
     }
 }
