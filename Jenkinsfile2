@@ -5,7 +5,7 @@ pipeline {
     stage('CheckOut') {
       steps {
         echo 'Checkout the source code from GitHub'
-        git branch: 'main', url: 'https://github.com/Pratap-mulakala/InsureMe-20Mar.git'
+        git branch: 'main', url: 'https://github.com/Sourav16031998/InsureMe-20Mar.git'
             }
     }
     
@@ -24,7 +24,7 @@ pipeline {
     
     stage('Docker Image Creation') {
       steps {
-        sh 'docker build -t pratap1371/insure:1.0 .'
+        sh 'docker build -t sourav16031998/insure-me:1.0 .'
             }
     }
      stage('Docker-Login') {
@@ -38,7 +38,7 @@ pipeline {
 
     stage('Push Image to DockerHub') {
       steps {
-        sh 'docker push pratap1371/insure:1.0'
+        sh 'docker push sourav16031998/insure-me:1.0'
             }
     } */
     stage('Deploy Application using Ansible') {
