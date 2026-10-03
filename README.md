@@ -69,3 +69,14 @@ http://localhost:8080
 POST /contact
 
 GET /contacts
+docker exec -it mysql mysql -u insure -p
+
+Password:
+
+insure123
+
+Then:
+
+USE insuredb;
+
+SELECT * FROM contact;
