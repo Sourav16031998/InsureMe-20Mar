@@ -1,4 +1,9 @@
-FROM openjdk:11
+FROM eclipse-temurin:11-jre
+
 ARG JAR_FILE=target/*.jar
+
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]
