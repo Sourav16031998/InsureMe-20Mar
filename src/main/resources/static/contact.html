@@ -97,18 +97,45 @@
                 Get In Touch
               </h2>
             </div>
-            <form action="#" class="contact_form">
-              <input type="text" name="your_name" class="form-control" id="inputName" placeholder="Your Name">
-              <input type="text" name="phone_number" class="form-control" id="inputNumber" placeholder="Mobile Number">
-              <input type="email" name="email_address" class="form-control" id="inputMail" placeholder="Email">
-              <input type="text" name="your_message" class="form-control" id="inputMessage" placeholder="Message">
-              <div id=response> </div>
-              <div class="btn-box btn-center">
-                <button type="button" id="my-button" onclick='document.getElementById("response").innerHTML="Message Sent";'>
-                  Send
-                </button>
-              </div>
-            </form>
+            <form id="contactForm" class="contact_form">
+
+    <input type="text"
+           name="name"
+           class="form-control"
+           id="inputName"
+           placeholder="Your Name"
+           required>
+
+    <input type="text"
+           name="mobile"
+           class="form-control"
+           id="inputNumber"
+           placeholder="Mobile Number"
+           required>
+
+    <input type="email"
+           name="email"
+           class="form-control"
+           id="inputMail"
+           placeholder="Email"
+           required>
+
+    <textarea
+           name="message"
+           class="form-control"
+           id="inputMessage"
+           placeholder="Message"
+           required></textarea>
+
+    <div id="response"></div>
+
+    <div class="btn-box btn-center">
+        <button type="submit" id="my-button">
+            Send
+        </button>
+    </div>
+
+</form>
           </div>
         </div>
       </div>
@@ -215,6 +242,53 @@
   <script src="js/bootstrap.js"></script>
   <!-- custom js -->
   <script src="js/custom.js"></script>
+  <script>
+document.getElementById("contactForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const contactData = {
+        name: document.getElementById("inputName").value,
+        mobile: document.getElementById("inputNumber").value,
+        email: document.getElementById("inputMail").value,
+        message: document.getElementById("inputMessage").value
+    };
+
+    try {
+
+        const response = await fetch("/contact", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(contactData)
+        });
+
+        if (response.ok) {
+
+            document.getElementById("response").innerHTML =
+                "Message saved successfully!";
+
+            document.getElementById("contactForm").reset();
+
+        } else {
+
+            document.getElementById("response").innerHTML =
+                "Failed to save message.";
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("response").innerHTML =
+            "Error connecting to server.";
+
+    }
+
+});
+</script>
   <!-- Google Map -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
   <!-- End Google Map -->
